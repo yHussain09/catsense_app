@@ -1,0 +1,302 @@
+<div class="card shadow mb-4" ng-controller="activityController">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Activities</h6>
+    </div>
+    <div class="card-body">
+
+        <div class="table-responsive">
+            <div>
+                <!-- <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                      <div><label>Show
+                                          <select class="custom-select custom-select-sm form-control form-control-sm" ng-model="page.take"
+                                            ng-options="opt.code as opt.description for opt in pageSizeCombo">
+                          
+                                            <option value="10">10</option>
+                                                              <option value="25">25</option>
+                                                              <option value="50">50</option>
+                                                              <option value="100">100</option>
+                                          </select> entries</label></div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                      <div class="justify-content-end">
+                                        <label>Search:<input type="search" class="form-control form-control-sm" placeholder="">
+                                        </label>
+                                      </div>
+                                    </div>
+                          
+                                  </div> -->
+                <div class="row">
+                    <div class="col-sm-12" style="overflow-y: scroll; height: 259px;">
+                        <table class="table table-sm table-hover table-bordered header-fixed" role="grid">
+                            <thead class="thead-dark-gray">
+                                <tr role="row">
+                                    <th ng-click="setSortColumn('organizationId')">Organization</th>
+                                    <!-- <th ng-click="setSortColumn('countryId')">Country</th> -->
+                                    <!-- <th ng-click="setSortColumn('cityId')">City</th> -->
+                                    <!-- <th ng-click="setSortColumn('areaId')">Area</th> -->
+                                    <!-- <th ng-click="setSortColumn('storeId')">Store</th> -->
+                                    <th ng-click="setSortColumn('name')">Activity</th>
+                                    <th ng-click="setSortColumn('description')">Description</th>
+                                    <th ng-click="setSortColumn('days')">Days</th>
+                                    <th ng-click="setSortColumn('startDate')">Start Date</th>
+                                    <th ng-click="setSortColumn('endDate')">End Date</th>
+                                    <!-- <th ng-click="setSortColumn('active')">Status</th> -->
+                                    <th ng-click="setSortColumn('activityStatusId')">Status</th>
+                                    <th style="width: 10%;">
+                                        <span class="mdi mdi-18px mdi-plus-box" data-toggle="modal"
+                                            data-target="#updateModel" ng-click="bindModel(gridModel)">
+                                        </span>
+                                        &nbsp;&nbsp;
+                                        <span
+                                            ng-class="rowFilter ? 'mdi mdi-18px mdi-magnify btn-link' : 'mdi mdi-18px mdi-magnify'"
+                                            ng-click="toggleRowFilter()"></span>
+                                        &nbsp;&nbsp;
+                                        <span
+                                            ng-class="columnSort ? 'mdi mdi-18px mdi-sort btn-link' : 'mdi mdi-18px mdi-sort'"
+                                            ng-click="toggleColumnSort()"></span>
+                                    </th>
+                                </tr>
+                                <tr role="row" ng-show="rowFilter">
+                                    <th>
+                                        <select class="form-control form-control-sm" ng-model="filter.organizationId"
+                                            ng-options="opt.code as opt.description for opt in organizationDataCombo">
+                                        </select>
+                                    </th>
+                                    <!-- <th>
+                                        <select class="form-control form-control-sm" ng-model="filter.countryId"
+                                            ng-options="opt.code as opt.description for opt in countryDataCombo">
+                                        </select>
+                                    </th>
+                                    <th>
+                                        <select class="form-control form-control-sm" ng-model="filter.cityId"
+                                            ng-options="opt.code as opt.description for opt in cityDataCombo">
+                                        </select>
+                                    </th>
+                                    <th>
+                                        <select class="form-control form-control-sm" ng-model="filter.areaId"
+                                            ng-options="opt.code as opt.description for opt in areaDataCombo">
+                                        </select>
+                                    </th>
+                                    <th>
+                                        <select class="form-control form-control-sm" ng-model="filter.storeId"
+                                            ng-options="opt.code as opt.description for opt in storeDataCombo">
+                                        </select>
+                                    </th> -->
+                                    <th><input class="form-control form-control-sm" type="text" ng-model="filter.name">
+                                    </th>
+                                    <th>
+                                        <input class="form-control form-control-sm" type="text"
+                                            ng-model="filter.description">
+                                    </th>
+                                    <th>
+                                        <input class="form-control form-control-sm" type="number"
+                                            ng-model="filter.days">
+                                    </th>
+                                    <th>
+                                        <input class="form-control form-control-sm" type="date"
+                                            ng-model="filter.startDate">
+                                    </th>
+                                    <th>
+                                        <input class="form-control form-control-sm" type="date"
+                                            ng-model="filter.endDate">
+                                    </th>
+                                    <th>
+                                        <select class="form-control form-control-sm" ng-model="filter.activityStatusId"
+                                            ng-options="opt.code as opt.description for opt in activityStatusDataCombo">
+                                        </select>
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <!-- <tfoot>
+                                                          <tr>
+                                                              <th rowspan="1" colspan="1">Name</th>
+                                                              <th rowspan="1" colspan="1">Position</th>
+                                                              <th rowspan="1" colspan="1">Office</th>
+                                                              <th rowspan="1" colspan="1">Age</th>
+                                                              <th rowspan="1" colspan="1">Start date</th>
+                                                              <th rowspan="1" colspan="1">Salary</th>
+                                                          </tr>
+                                                      </tfoot> -->
+                            <tbody>
+                                <tr ng-repeat="gridModel in gridModels.rows | filter : filter | orderBy : sort.column : sort.reverse"
+                                    role="row" ng-class="$even ? 'odd' : 'even'" id="{{gridModel.activityId}}">
+                                    <td class="ng-hide">{{gridModel.organizationId}}</td>
+                                    <!-- <td class="ng-hide">{{gridModel.countryId}}</td> -->
+                                    <!-- <td class="ng-hide">{{gridModel.cityId}}</td> -->
+                                    <!-- <td class="ng-hide">{{gridModel.areaId}}</td> -->
+                                    <!-- <td class="ng-hide">{{gridModel.storeId}}</td> -->
+                                    <td class="ng-hide">{{gridModel.activityId}}</td>
+                                    <td>{{gridModel.organization.name}}</td>
+                                    <!-- <td>{{gridModel.country.name}}</td> -->
+                                    <!-- <td>{{gridModel.city.name}}</td> -->
+                                    <!-- <td>{{gridModel.area.name}}</td> -->
+                                    <!-- <td>{{gridModel.store.name}}</td> -->
+                                    <td>{{gridModel.name}}</td>
+                                    <td>{{gridModel.description}}</td>
+                                    <td>{{gridModel.days}}</td>
+                                    <td>{{gridModel.startDate | date}}</td>
+                                    <td>{{gridModel.endDate | date}}</td>
+                                    <td>{{gridModel.activityStatus.name}}</td>
+                                    <!-- <td>{{ gridModel.active ? (gridModel.active === 'Y' ? 'Active' : 'In-active') : '' }} -->
+                                    <td>
+                                        <span class="mdi mdi-18px mdi-table-edit" data-toggle="modal"
+                                            data-target="#updateModel" ng-click="bindModel(gridModel)">
+                                        </span>
+                                        &nbsp;&nbsp;
+                                        <span class="mdi mdi-18px mdi-delete" data-toggle="modal"
+                                            data-target="#deleteModel" ng-click="bindModel(gridModel)">
+                                        </span>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                      <div>Showing 1 to 10 of {{gridModels.count}} entries</div>
+                                      <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                        <button ng-repeat="pageSize in pageSizeOptions" ng-click="setPageSize(pageSize)" type="button" class="btn btn-link">{{pageSize}}</button>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                      <div>
+                                        <ul class="pagination justify-content-end">
+                                          <li class="page-item previous disabled" id="dataTable_previous"><a href="#" aria-controls="dataTable"
+                                              data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li>
+                                          <li ng-repeat="gridModel in gridModels.rows | startFrom: 1 * take | limitTo: take"
+                                            class="page-item active">
+                                            <a href="#" class="page-link">{{$index + 1}}</a>
+                                          </li>
+                                          <li class=" page-item "><a href="#" class="page-link">2</a></li>
+                                          <li class=" page-item "><a href="#" class="page-link">3</a></li>
+                                          <li class=" page-item "><a href="#" class="page-link">4</a></li>
+                                          <li class=" page-item "><a href="#" class="page-link">5</a></li>
+                                          <li class=" page-item "><a href="#" class="page-link">6</a></li>
+                                          <li class=" page-item next" id="dataTable_next"><a href="#" class="page-link">Next</a></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </div> -->
+            </div>
+        </div>
+        <div id="updateModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Activity - {{formModel.activityId}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="recipient-name" class="col-form-label">Organization</label>
+                                    <select class="form-control form-control-sm" ng-model="formModel.organizationId"
+                                        ng-options="opt.code as opt.description for opt in organizationDataCombo">
+                                    </select>
+                                </div>
+                                <!-- <div class="form-group col-md-4">
+                                    <label for="recipient-name" class="col-form-label">Country</label>
+                                    <select class="form-control form-control-sm" ng-model="formModel.countryId"
+                                        ng-options="opt.code as opt.description for opt in countryDataCombo">
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="recipient-name" class="col-form-label">City</label>
+                                    <select class="form-control form-control-sm" ng-model="formModel.cityId"
+                                        ng-options="opt.code as opt.description for opt in cityDataCombo | filter: formModel.countryId : true">
+                                    </select>
+                                </div> -->
+                            </div>
+                            <!-- <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="recipient-name" class="col-form-label">Area</label>
+                                    <select class="form-control form-control-sm" ng-model="formModel.areaId"
+                                        ng-options="opt.code as opt.description for opt in areaDataCombo | filter: formModel.cityId : true">
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="recipient-name" class="col-form-label">Store</label>
+                                    <select class="form-control form-control-sm" ng-model="formModel.storeId"
+                                        ng-options="opt.code as opt.description for opt in storeDataCombo | filter: formModel.areaId : true">
+                                    </select>
+                                </div>
+                            </div> -->
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Name</label>
+                                <input type="text" class="form-control form-control-sm" ng-model="formModel.name">
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Description</label>
+                                <input type="text" class="form-control form-control-sm"
+                                    ng-model="formModel.description">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="recipient-name" class="col-form-label">Days</label>
+                                    <input type="number" class="form-control form-control-sm" ng-model="formModel.days">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="recipient-name" class="col-form-label">Start Date</label>
+                                    <input type="date" class="form-control form-control-sm"
+                                        ng-model="formModel.startDate">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="recipient-name" class="col-form-label">End Date</label>
+                                    <input type="date" class="form-control form-control-sm"
+                                        ng-model="formModel.endDate">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Status</label>
+                                <select class="form-control form-control-sm" ng-model="formModel.activityStatusId"
+                                    ng-options="opt.code as opt.description for opt in activityStatusDataCombo">
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                        <button ng-if="!formModel.activityId" type="button" class="btn btn-sm btn-primary"
+                            data-dismiss="modal" ng-click="save(formModel)">Save</button>
+                        <button ng-if="formModel.activityId" type="button" class="btn btn-sm btn-primary"
+                            data-dismiss="modal" ng-click="update(formModel)">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="deleteModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Activity - {{formModel.activityId}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h5>Are you sure you want to delete this record ?</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal"
+                            ng-click="delete(formModel)">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div dx-select-box="countryComboOptions"></div>
+            <div id="gridContainer" dx-data-grid="dataGridOptions"></div> -->
+
+    </div>
+</div>
+<!-- <script type="text/javascript" src="../js/controllers/storeController.js"></script> -->

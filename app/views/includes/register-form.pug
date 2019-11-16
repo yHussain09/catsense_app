@@ -1,0 +1,37 @@
+form(action="/register" method="post")
+    div.form-group
+        label(for="username") Username
+        input(type="text", name="username", class="form-control", id="username")   
+    
+    div.form-group
+        label(for="password") Password
+        input(type="password", name="password", class="form-control", id="password")   
+
+    div.form-group
+        label(for="confirmpassword") Confirm Password
+        input(type="password", name="confirmpassword", class="form-control", id="confirmpassword")   
+    
+    button(class="btn btn-primary", type="submit") Register
+
+
+    //- table
+    //-     tr
+    //-         td Username
+    //-         td
+    //-             input(type="text" name="username")
+    //-     //- tr
+    //-     //-     td Fullname
+    //-     //-     td
+    //-     //-         input(type="text", name="fullname")
+    //-     tr
+    //-         td Password
+    //-         td  
+    //-             input(type="password" name="password")
+    //-     tr
+    //-         td Confirm Password
+    //-         td  
+    //-             input(type="password" name="confirmpassword")
+    //-     tr
+    //-         td
+    //-         td
+    //-             input(type="submit", value="Register")
