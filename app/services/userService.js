@@ -1,7 +1,7 @@
-const User = require('../models/').User
-const bcrypt = require('bcrypt')
-const Sequelize = require('sequelize')
-const Op = Sequelize.Op
+const User = require('../models/').User;
+const bcrypt = require('bcrypt');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 function createUser (user) {
   return User
@@ -15,7 +15,7 @@ function createUser (user) {
       createdAt: user.createdAt, 
       updatedBy: user.updatedBy, 
       updatedAt: user.updatedAt
-    })
+    });
 }
 
 function getUserDataCombo() {
@@ -56,7 +56,7 @@ function getAllUsers (skip, take, filter, orderby) {
         order: [
           [sort[0], sort[1]]
         ]
-      })
+      });
     }
   }
   if ((skip !== undefined) && (take !== undefined)) {
@@ -98,7 +98,7 @@ function updateUserById (user, userId) {
       where: {
         userId: userId
       }
-    })
+    });
 }
 
 function deleteUserById (userId) {
@@ -107,7 +107,7 @@ function deleteUserById (userId) {
       where: {
         userId: userId
       }
-    })
+    });
 }
 
 function getUserByUsername(username){
@@ -116,7 +116,7 @@ function getUserByUsername(username){
       username: username
     },
     include: ['organization', 'role']
-  })
+  });
 }
 
 function isUserValid (requestPassword, userPassword){
@@ -137,4 +137,4 @@ module.exports = {
   getUserByUsername: getUserByUsername,
   isUserValid: isUserValid,
   getUserDataCombo: getUserDataCombo
-}
+};

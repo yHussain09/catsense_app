@@ -115,6 +115,11 @@ catSenseApp.config(
                 templateUrl: "../partials/activity-user-view.html",
                 // controller: 'YourOtherCtrl'
             })
+            .state('userStore', {
+                url: "/userStore",
+                templateUrl: "../partials/user-store-view.html",
+                // controller: 'YourOtherCtrl'
+            })
             .state('activityProduct', {
                 url: "/activityProduct",
                 templateUrl: "../partials/activity-product-view.html",
