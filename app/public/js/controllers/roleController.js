@@ -1,112 +1,159 @@
-catSenseApp.controller('roleController', function($scope, $http, $q) {
-    self=$scope;
-    let url = 'http://localhost:3000/api/v1/roles';
-    let orgaDataComboUrl = 'http://localhost:3000/api/v1/organizations/dataCombo';
-    let gridDataSource = new DevExpress.data.CustomStore({
-      load: function (loadOptions) {
-          var parameters = {};           
-          debugger;
-          if (loadOptions.sort) {
-              parameters.orderby = loadOptions.sort[0].selector;
-              if (loadOptions.sort[0].desc)
-                parameters.orderby += '~desc';
-          }
+catSenseApp.controller('roleController', function ($scope, $http) {
+  self = $scope;
+
+  $scope.gridModels = {};
+  $scope.formModel = {};
+  $scope.organizationDataCombo = [];
+  $scope.fixedCombo = [{
+          code: "Y",
+          description: "Yes"
+      },
+      {
+          code: "N",
+          description: "No"
+      }
+  ];
+  $scope.page = {};
+  $scope.page.skip = 0;
+  $scope.page.take = 999999;
+  $scope.pageSizeOptions = [5, 10, 15, 20];
+  $scope.rowFilter = false;
+  $scope.columnSort = false;
+  $scope.sort = {};
+  $scope.sort.reverse = false;
+  $scope.sort.column = '';
+
+  $scope.loadOrgaDataCombo = function(){
+      $http({
+          method: 'GET',
+          url: 'http://localhost:3000/api/v1/organizations/dataCombo'
+      }).then(function mySuccess(response) {
   
-          if (loadOptions.filter){
-            parameters.filter = encodeURI(loadOptions.filter);
-            // parameters.filter = loadOptions.filter[0] + '~' + loadOptions.filter[1] + '~' + loadOptions.filter[2];
-          }
-          
-          parameters.skip = loadOptions.skip;
-          parameters.take = loadOptions.take;
-          
-          let config = {
-              params: parameters
-          };
-          
-          return $http.get(url, (config))
-          .then(function (response) {
-              return { data: response.data.rows, totalCount: response.data.count };
-          }, function (error) {
-            console.error(error);
-              return $q.reject("Data Loading Error");
+          angular.forEach(response.data, function(item, index){
+              let itemObject = {};
+              itemObject.code = item.organizationId;
+              itemObject.description = item.name; 
+              $scope.organizationDataCombo.push(itemObject);
           });
-      },
-      insert: function(values){
-        return $http.post(url, JSON.stringify(values))
-        .then(function (response) {
+          // $scope.organizationDataCombo = response;
           console.log(response);
-          // $scope.reloadGrid();
-          return { data: response.data, totalCount: response.data.length };
-        }, function (error) {
-          console.error(error.data);
-          return $q.reject("Data Insert Error");
-        });
-      },
-      update: function(key, values){
-        return $http.put(url + '/' +  encodeURIComponent(key.roleId), JSON.stringify(values))
-        .then(function (response) {
+          // $scope.gridModels = response.data;
+      }, function myError(response) {
           console.log(response);
-          // $scope.reloadGrid();
-          return { data: response.data.rows, totalCount: response.data.count };
-        }, function (error) {
-          console.error(error);
-          return $q.reject("Data Update Error");
-        });
-      },
-      remove: function(key){
-        return $http.delete(url + '/' + encodeURIComponent(key.roleId))
-        .then(function (response) {
+          // $scope.myWelcome = response.statusText;
+      });
+  };
+
+  $scope.loadGrid = function(){
+      $http({
+          method: 'GET',
+          url: 'http://localhost:3000/api/v1/roles?skip=' + $scope.page.skip + '&take=' + $scope.page.take
+      }).then(function mySuccess(response) {
           console.log(response);
-          return $q.defer().resolve(response);
-        }, function (error) {
-          console.error(error);
-          return $q.reject("Data Delete Error");
-        });
-      },
-  });
-    
-    $scope.dataGridOptions = {
-      dataSource: gridDataSource,
-      columns: [
-        {
-          caption: 'Organization', 
-          dataField:'organizationId',
-          lookup: {
-            dataSource: orgaDataComboUrl,
-            key: 'organizationId',
-            valueExpr: 'organizationId',
-            displayExpr: 'name'
-          }
-        }, 
-        {caption: 'Role', dataField:'name'}, {caption: 'Description', dataField:'description'}
-      ],
-      showBorders:true,
-      showColumnHeaders:true,
-      showColumnLines:true,
-      showRowLines:true,
-      editing: {
-        allowAdding: true,
-        allowDeleting: true,
-        allowUpdating: true,
-        mode: 'row'
-      },
-      pager: {
-        allowedPageSizes: [5, 10, 15, 20],
-        infoText:"Page {0} of {1} ({2} items)",
-        showInfo:true,
-        showNavigationButtons: true,
-        showPageSizeSelector: true,
-        visible:true
-      },
-      paging: {
-        enabled:true,
-        // pageIndex:0,
-        pageSize:5
-      },
-      headerFilter: { visible: false },
-      filterRow: { visible: true },
-      twoWayBindingEnabled: true,
-      remoteOperations: { groupPaging: true }	
-    };
-  });
+          $scope.gridModels = response.data;
+      }, function myError(response) {
+          console.log(response);
+          // $scope.myWelcome = response.statusText;
+      });
+  };
+
+  $scope.loadOrgaDataCombo();
+  $scope.loadGrid();
+
+
+  // $scope.reloadGrid = function () {
+  //     $http({
+  //         method: 'GET',
+  //         url: 'http://localhost:3000/api/v1/roles'
+  //     }).then(function mySuccess(response) {
+  //         console.log(response);
+  //         $scope.gridModels = response.data;
+  //     }, function myError(response) {
+  //         console.log(response);
+  //         // $scope.myWelcome = response.statusText;
+  //     });
+  // };
+
+  $scope.bindModel = function (model) {
+      $scope.formModel = model || {};
+      // angular.element('.pointer').removeClass('active-row');
+      // angular.element('#' + model.id).addClass('active-row');
+  };
+
+  $scope.new = function () {
+      $scope.formModel = {};
+  };
+
+  $scope.save = function (model) {
+      $http.post('http://localhost:3000/api/v1/roles', JSON.stringify(model))
+          .then(function (success) {
+              console.log(success);
+              $scope.loadGrid();
+          }, function (error) {
+              console.error(error.data);
+          });
+  };
+
+  $scope.update = function (model) {
+      $http.put('http://localhost:3000/api/v1/roles/' + model.roleId, JSON.stringify(model))
+          .then(function (success) {
+              console.log(success);
+              $scope.loadGrid();
+          }, function (error) {
+              console.error(error.data);
+          });
+  };
+
+  $scope.delete = function (model) {
+      $http.delete('http://localhost:3000/api/v1/roles/' + model.roleId)
+          .then(function (success) {
+              console.log(success);
+              $scope.loadGrid();
+          }, function (error) {
+              console.error(error.data);
+          });
+
+  };
+
+  $scope.setSortColumn = function (sort) {
+      if ($scope.columnSort) {
+          $scope.sort.column = sort;
+          $scope.sort.reverse = !$scope.sort.reverse;
+      }else{
+          $scope.sort = {};
+      }
+  }
+
+  $scope.toggleRowFilter = function () {
+      if ($scope.rowFilter) $scope.filter = undefined;
+      $scope.rowFilter = !$scope.rowFilter;
+  };
+
+  $scope.toggleColumnSort = function () {
+      $scope.columnSort = !$scope.columnSort;
+  };
+
+  $scope.setPageSize = function (pageSize) {
+      $scope.page.take = pageSize;
+      $scope.loadGrid();
+  };
+});
+
+// function roleController($scope, $http) {
+//     self=$scope;
+//     $scope.grid = {};
+//     $scope.grid.title = 'roles';
+
+//     $http({
+//         method : 'GET',
+//         url : 'http://localhost:3000/api/v1/roles'
+//       }).then(function mySuccess(response) {
+//         console.log(response);
+//         $scope.grid.data = response.data;
+//       }, function myError(response) {
+//         console.log(response);
+//         $scope.myWelcome = response.statusText;
+//     });
+// }
+// // catSenseApp.register.controller('roleController', roleController);
+// angular.module('cat-sense-app').controller('roleController', ['$scope', '$http', roleController]);

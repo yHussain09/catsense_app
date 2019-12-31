@@ -1,33 +1,6 @@
-'use strict'
+'use strict';
 module.exports = (sequelize, DataTypes) => {
   const ActivityData = sequelize.define('ActivityData', {
-    // activityId: {
-    //     field: 'activity_id',
-    //     type: DataTypes.INTEGER,
-    //     allowNull: false,
-    //     references: {
-    //         model: 'Activity',
-    //         key: 'activity_id'
-    //     }
-    // },
-    // customerId: {
-    //     field: 'customer_id',
-    //     type: DataTypes.INTEGER,
-    //     allowNull: false,
-    //     references: {
-    //         model: 'Customer',
-    //         key: 'customer_id'
-    //     }
-    // },
-    // userId: {
-    //     field: 'user_id',
-    //     type: DataTypes.INTEGER,
-    //     allowNull: false,
-    //     references: {
-    //         model: 'User',
-    //         key: 'user_id'
-    //     }
-    // },
     activityDataId: {
         field: 'activity_data_id',
         allowNull: false,
@@ -35,28 +8,61 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.INTEGER
     },
-    // productId: {
-    //     field: 'product_id',
-    //     type: DataTypes.INTEGER,
-    //     allowNull: false,
-    //     references: {
-    //         model: 'Product',
-    //         key: 'product_id'
-    //     }
-    // },
-    productQuentity: {
-        field: 'product_quentity',
-        type: DataTypes.INTEGER
+    activityId: {
+      field: 'activity_id',
+      allowNull: false,
+      type: DataTypes.INTEGER
+  },
+    activityDate: {
+        field: 'activity_date',
+        type: DataTypes.DATE,
+        allowNull: false
     },
-    // measurementUnitId: {
-    //     field: 'measurement_unit_id',
-    //     type: DataTypes.INTEGER,
-    //     allowNull: false,
-    //     references: {
-    //         model: 'MeasurementUnit',
-    //         key: 'measurement_unit_id'
-    //     }
-    // },
+    userId: {
+      field: 'user_id',
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    customerId: {
+      field: 'customer_id',
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    cityId: {
+      field: 'city_id',
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    areaId: {
+      field: 'area_id',
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    storeId: {
+      field: 'store_id',
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    productId: {
+      field: 'product_id',
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    productQuantity: {
+        field: 'product_quantity',
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    productiveInterception: {
+      field: 'productive_interception',
+      type: DataTypes.STRING(1),
+      allowNull: false
+    },
+    workingDay: {
+      field: 'working_day',
+      type: DataTypes.STRING(3),
+      allowNull: false
+    },
     createdBy: {
       field: 'created_by',
       type: DataTypes.STRING(255)
@@ -81,10 +87,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     freezeTableName: true,
     version: true
-  })
+  });
   ActivityData.associate = function (models) {
     // associations can be defined here
     
-  }
-  return ActivityData
-}
+  };
+  return ActivityData;
+};

@@ -1,6 +1,6 @@
-const Activity = require('../models/').Activity
-const Sequelize = require('sequelize')
-const Op = Sequelize.Op
+const Activity = require('../models/').Activity;
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 function createActivity (activity) {
   return Activity
@@ -21,7 +21,7 @@ function createActivity (activity) {
       createdAt: activity.createdAt,
       updatedBy: activity.updatedBy,
       updatedAt: activity.updatedAt
-    })
+    });
 }
 
 function getAllActivitys (skip, take, filter, orderby) {
@@ -75,10 +75,20 @@ function getActivityDataCombo() {
   });
 }
 
+function getActivityDataComboByOrga(organizationId){
+  return Activity.findAll({
+    attributes: ['organizationId', 'activityId', 'name']
+  }, {
+    where: {
+      organizationId: organizationId
+    }
+  });
+}
+
 function getActivityById (activityId) {
   return Activity.findByPk( activityId, {
     include: ['organization', 'activityStatus']
-  })
+  });
 }
 
 function updateActivityById (activity, activityId) {
@@ -104,7 +114,7 @@ function updateActivityById (activity, activityId) {
       where: {
         activityId: activityId
       }
-    })
+    });
 }
 
 function deleteActivityById (activityId) {
@@ -122,5 +132,6 @@ module.exports = {
   getActivityById: getActivityById,
   updateActivityById: updateActivityById,
   deleteActivityById: deleteActivityById,
-  getActivityDataCombo: getActivityDataCombo
-}
+  getActivityDataCombo: getActivityDataCombo,
+  getActivityDataComboByOrga: getActivityDataComboByOrga
+};

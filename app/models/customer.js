@@ -8,15 +8,6 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    // customerTypeId: {
-    //     field: 'customer_type_id',
-    //     type: DataTypes.INTEGER,
-    //     allowNull: false,
-    //     references: {
-    //       model: 'CustomerType',
-    //       key: 'customer_type_id'
-    //     }
-    //   },
     firstName: {
       field: 'first_name',
       type: DataTypes.STRING(100)
@@ -79,11 +70,11 @@ module.exports = (sequelize, DataTypes) => {
     version: true,
     underscored: true,
     tableName: 'customer'
-  })
+  });
   Customer.associate = function (models) {
     // associations can be defined here
-    Customer.belongsTo(models.CustomerType, { foreignKey: 'customerTypeId', as: 'customerType'})
+    Customer.belongsTo(models.CustomerType, { foreignKey: 'customerTypeId', as: 'customerType'});
     
-  }
-  return Customer
-}
+  };
+  return Customer;
+};

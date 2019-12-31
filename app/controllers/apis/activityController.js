@@ -1,10 +1,10 @@
-'use strict'
+'use strict';
 
-const express = require('express')
+const express = require('express');
 
-const ActivityService = require('../../services/ActivityService')
+const ActivityService = require('../../services/ActivityService');
 
-const router = express.Router()
+const router = express.Router();
 
 // create a new Activity
 router.post('/', (req, res) => {
@@ -18,21 +18,28 @@ router.post('/', (req, res) => {
 router.get('/', (req, res) => {
   ActivityService.getAllActivitys(+req.query.skip, +req.query.take, req.query.filter, req.query.orderby)
     .then(activity => res.status(200).send(activity))
-    .catch(error => res.status(400).send(error))
+    .catch(error => res.status(400).send(error));
 })
 
-// get all areas {activityId, name} for data combo.
+// get all activities {activityId, name} for data combo.
 router.get('/dataCombo', (req, res) => {
   ActivityService.getActivityDataCombo()
     .then(activity => res.status(200).send(activity))
-    .catch(error => res.status(400).send(error))
-})
+    .catch(error => res.status(400).send(error));
+});
+
+// get all activitiesByOrgaCode {activityId, name} for data combo.
+router.get('/dataComboByOrga', (req, res) => {
+  ActivityService.getActivityDataComboByOrga(req.session.user.organizationId)
+    .then(activity => res.status(200).send(activity))
+    .catch(error => res.status(400).send(error));
+});
 
 // get Activity by id
 router.get('/:id', (req, res) => {
   ActivityService.getActivityById(req.params.id)
     .then(activity => res.status(200).send(activity))
-    .catch(error => res.status(400).send(error))
+    .catch(error => res.status(400).send(error));
 })
 
 // update Activity by id

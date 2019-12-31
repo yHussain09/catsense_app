@@ -8,24 +8,6 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.INTEGER
     },
-    // activityId: {
-    //     field: 'activity_id',
-    //     type: DataTypes.INTEGER,
-    //     allowNull: false,
-    //     references: {
-    //         model: 'Activity',
-    //         key: 'activity_id'
-    //     }
-    // },
-    // storeId: {
-    //     field: 'store_id',
-    //     type: DataTypes.INTEGER,
-    //     allowNull: false,
-    //     references: {
-    //         model: 'Store',
-    //         key: 'store_id'
-    //     }
-    // },
     createdBy: {
       field: 'created_by',
       type: DataTypes.STRING(255)

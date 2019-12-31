@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Activity = sequelize.define('Activity', {
     // organizationId: {
@@ -76,16 +76,16 @@ module.exports = (sequelize, DataTypes) => {
     version: true,
     underscored: true,
     tableName: 'activity'
-  })
+  });
   Activity.associate = function (models) {
     // associations can be defined here
-    Activity.belongsTo(models.Organization, { foreignKey: 'organizationId', as: 'organization'})
+    Activity.belongsTo(models.Organization, { foreignKey: 'organizationId', as: 'organization'});
     // Activity.belongsTo(models.Country, { foreignKey: 'countryId', as: 'country'})
     // Activity.belongsTo(models.City, { foreignKey: 'cityId', as: 'city'})
     // Activity.belongsTo(models.Area, { foreignKey: 'areaId', as: 'area'})
     // Activity.belongsTo(models.Store, { foreignKey: 'storeId', as: 'store'})
-    Activity.belongsTo(models.ActivityStatus, { foreignKey: 'activityStatusId', as: 'activityStatus'})
+    Activity.belongsTo(models.ActivityStatus, { foreignKey: 'activityStatusId', as: 'activityStatus'});
     
-  }
-  return Activity
-}
+  };
+  return Activity;
+};

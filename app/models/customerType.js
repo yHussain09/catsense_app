@@ -44,10 +44,10 @@ module.exports = (sequelize, DataTypes) => {
     version: true,
     underscored: true,
     tableName: 'customer_type'
-  })
+  });
   CustomerType.associate = function (models) {
     // associations can be defined here
 
-  }
-  return CustomerType
-}
+  };
+  return CustomerType;
+};

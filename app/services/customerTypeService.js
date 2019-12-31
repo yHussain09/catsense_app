@@ -15,7 +15,7 @@ function createCustomerType (customerType) {
 }
 
 function getCustomerTypesDataCombo() {
-  return Country.findAll({
+  return CustomerType.findAll({
     attributes: ['customerTypeId', 'name']
   });
 }

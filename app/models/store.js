@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Store = sequelize.define('Store', {
     // countryId: {
@@ -73,13 +73,13 @@ module.exports = (sequelize, DataTypes) => {
     version: true,
     underscored: true,
     tableName: 'store'
-  })
+  });
   Store.associate = function (models) {
     // associations can be defined here
-    Store.belongsTo(models.Country, { foreignKey: 'countryId', as: 'country'})
-    Store.belongsTo(models.City, { foreignKey: 'cityId', as: 'city'})
-    Store.belongsTo(models.Area, { foreignKey: 'areaId', as: 'area'})
+    Store.belongsTo(models.Country, { foreignKey: 'countryId', as: 'country'});
+    Store.belongsTo(models.City, { foreignKey: 'cityId', as: 'city'});
+    Store.belongsTo(models.Area, { foreignKey: 'areaId', as: 'area'});
     
-  }
-  return Store
-}
+  };
+  return Store;
+};

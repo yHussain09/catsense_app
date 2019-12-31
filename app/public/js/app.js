@@ -44,12 +44,6 @@ catSenseApp.config(
                 templateUrl: "../partials/role-view.html",
                 // controller: '../js/controllers/organizationController.js'
             })
-            .state('roleCopy', {
-                url: "/roleCopy",
-                // templateUrl: "../partials/role-view.html",
-                templateUrl: "../partials/role-view - Copy.html",
-                // controller: '../js/controllers/organizationController.js'
-            })
             .state('user', {
                 url: "/user",
                 templateUrl: "../partials/user-view.html",

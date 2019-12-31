@@ -1,22 +1,27 @@
 catSenseApp.controller('activityMasterController', function ($scope, $http, $q) {
     self = $scope;
   
-    let url = 'http://localhost:3000/api/v1/activities';
-    let organizationDataComboUrl = 'http://localhost:3000/api/v1/organizations/dataCombo';
+    // let url = 'http://localhost:3000/api/v1/activities';
+    let activityDataComboByOrgaCodeUrl = 'http://localhost:3000/api/v1/activities/dataComboByOrga';
+    // let organizationDataComboUrl = 'http://localhost:3000/api/v1/organizations/dataCombo';
     // let countryDataComboUrl = 'http://localhost:3000/api/v1/countries/dataCombo';
     // let cityDataComboUrl = 'http://localhost:3000/api/v1/cities/dataCombo';
     // let areaDataComboUrl = 'http://localhost:3000/api/v1/areas/dataCombo';
     // let storeDataComboUrl = 'http://localhost:3000/api/v1/stores/dataCombo';
-    let activityStatusDataComboUrl = 'http://localhost:3000/api/v1/activityStatus/dataCombo';
+    // let activityStatusDataComboUrl = 'http://localhost:3000/api/v1/activityStatus/dataCombo';
   
     $scope.gridModels = {};
     $scope.formModel = {};
-    $scope.organizationDataCombo = [];
+    $scope.activityDataCombo = [];
+    $scope.activityMaster = {};
+    $scope.activeCount = '';
+    $scope.pendingCount = '';
+    // $scope.organizationDataCombo = [];
     // $scope.countryDataCombo = [];
     // $scope.cityDataCombo = [];
     // $scope.areaDataCombo = [];
     // $scope.storeDataCombo = [];
-    $scope.activityStatusDataCombo = [];
+    // $scope.activityStatusDataCombo = [];
     
     $scope.page = {};
     $scope.page.skip = 0;
@@ -28,23 +33,23 @@ catSenseApp.controller('activityMasterController', function ($scope, $http, $q) 
     $scope.sort.reverse = false;
     $scope.sort.column = '';
   
-    $scope.loadOrgaDataCombo = function(){
-      $http({
-          method: 'GET',
-          url: organizationDataComboUrl
-      }).then(function mySuccess(response) {
+  //   $scope.loadOrgaDataCombo = function(){
+  //     $http({
+  //         method: 'GET',
+  //         url: organizationDataComboUrl
+  //     }).then(function mySuccess(response) {
   
-          angular.forEach(response.data, function(item, index){
-              let itemObject = {};
-              itemObject.code = item.organizationId;
-              itemObject.description = item.name; 
-              $scope.organizationDataCombo.push(itemObject);
-          });
-          console.log(response);
-      }, function myError(response) {
-          console.log(response);
-      });
-  };
+  //         angular.forEach(response.data, function(item, index){
+  //             let itemObject = {};
+  //             itemObject.code = item.organizationId;
+  //             itemObject.description = item.name; 
+  //             $scope.organizationDataCombo.push(itemObject);
+  //         });
+  //         console.log(response);
+  //     }, function myError(response) {
+  //         console.log(response);
+  //     });
+  // };
 
     // $scope.loadCountryDataCombo = function () {
     //   $http({
@@ -121,50 +126,70 @@ catSenseApp.controller('activityMasterController', function ($scope, $http, $q) 
     //     });
     //   };
   
-      $scope.loadActivityStatusDataCombo = function () {
-        $http({
-          method: 'GET',
-          url: activityStatusDataComboUrl
-        }).then(function mySuccess(response) {
+      // $scope.loadActivityStatusDataCombo = function () {
+      //   $http({
+      //     method: 'GET',
+      //     url: activityStatusDataComboUrl
+      //   }).then(function mySuccess(response) {
     
-          angular.forEach(response.data, function (item, index) {
-            let itemObject = {};
-            itemObject.code = item.activityStatusId;
-            itemObject.description = item.name;
-            $scope.activityStatusDataCombo.push(itemObject);
-          });
-          console.log(response);
-        }, function myError(response) {
-          console.log(response);
-        });
-      };
+      //     angular.forEach(response.data, function (item, index) {
+      //       let itemObject = {};
+      //       itemObject.code = item.activityStatusId;
+      //       itemObject.description = item.name;
+      //       $scope.activityStatusDataCombo.push(itemObject);
+      //     });
+      //     console.log(response);
+      //   }, function myError(response) {
+      //     console.log(response);
+      //   });
+      // };
 
-    $scope.loadGrid = function () {
+    // $scope.loadGrid = function () {
+    //   $http({
+    //     method: 'GET',
+    //     url: url + '?skip=' + $scope.page.skip + '&take=' + $scope.page.take
+    //   }).then(function mySuccess(response) {
+    //     console.log(response);
+    //     $scope.gridModels = response.data;
+    //     $scope.activeCount = $scope.gridModels.rows.filter(function(c){return c.activityStatus.name==='ACTIVE';}).length;
+    //     $scope.pendingCount = $scope.gridModels.rows.filter(function(c){return c.activityStatus.name==='PENDING';}).length;
+    //     angular.forEach($scope.gridModels.rows, function (item, index) {
+    //           item.startDate = new Date(item.startDate);
+    //           item.endDate = new Date(item.endDate);
+    //     });
+        
+    //   }, function myError(response) {
+    //     console.log(response);
+    //   });
+    // };
+
+    $scope.loadActivityDataCombo = function () {
       $http({
         method: 'GET',
-        url: url + '?skip=' + $scope.page.skip + '&take=' + $scope.page.take
+        url: activityDataComboByOrgaCodeUrl
       }).then(function mySuccess(response) {
-        console.log(response);
-        $scope.gridModels = response.data;
-        angular.forEach($scope.gridModels.rows, function (item, index) {
-              item.startDate = new Date(item.startDate);
-              item.endDate = new Date(item.endDate);
+  
+        angular.forEach(response.data, function (item, index) {
+          let itemObject = {};
+          itemObject.code = item.activityId;
+          itemObject.description = item.name;
+          $scope.activityDataCombo.push(itemObject);
         });
-        
+        console.log(response);
       }, function myError(response) {
         console.log(response);
-        // $scope.myWelcome = response.statusText;
       });
     };
   
-    $scope.loadOrgaDataCombo();
+    // $scope.loadOrgaDataCombo();
     // $scope.loadCountryDataCombo();
     // $scope.loadCityDataCombo();
     // $scope.loadAreaDataCombo();
     // $scope.loadStoreDataCombo();
-    $scope.loadActivityStatusDataCombo();
-    $scope.loadGrid();
-  
+    // $scope.loadActivityStatusDataCombo();
+    // $scope.loadGrid();
+    $scope.loadActivityDataCombo();
+
     $scope.bindModel = function (model) {
       $scope.formModel = model || {};
     };

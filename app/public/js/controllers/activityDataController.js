@@ -1,9 +1,13 @@
 catSenseApp.controller('activityDataController', function ($scope, $http, $q) {
     self = $scope;
-    let url = 'http://localhost:3000/api/v1/activityData';
+    let customerUrl = 'http://localhost:3000/api/v1/customers';
+    let activityDataUrl = 'http://localhost:3000/api/v1/activityData';
+    let customerTypeComboUrl = 'http://localhost:3000/api/v1/customerTypes/dataCombo';
 
     $scope.gridModels = {};
-    $scope.formModel = {};
+    $scope.customerFormModel = {};
+    $scope.activityFormModel = {};
+    $scope.createdCustomer = {};
     $scope.genderFixedCombo = [{
         code: "M",
         description: "Male"
@@ -13,6 +17,7 @@ catSenseApp.controller('activityDataController', function ($scope, $http, $q) {
         description: "Female"
       }
     ];
+    $scope.customerTypeDataCombo = [];
     $scope.page = {};
     $scope.page.skip = 0;
     $scope.page.take = 999999;
@@ -22,6 +27,24 @@ catSenseApp.controller('activityDataController', function ($scope, $http, $q) {
     $scope.sort = {};
     $scope.sort.reverse = false;
     $scope.sort.column = '';
+
+    $scope.loadCustomerTypeDataCombo = function () {
+      $http({
+        method: 'GET',
+        url: customerTypeComboUrl
+      }).then(function mySuccess(response) {
+  
+        angular.forEach(response.data, function (item, index) {
+          let itemObject = {};
+          itemObject.code = item.customerTypeId;
+          itemObject.description = item.name;
+          $scope.customerTypeDataCombo.push(itemObject);
+        });
+        console.log(response);
+      }, function myError(response) {
+        console.log(response);
+      });
+    };
 
     $scope.loadGrid = function () {
         $http({
@@ -35,7 +58,8 @@ catSenseApp.controller('activityDataController', function ($scope, $http, $q) {
         });
     };
 
-    $scope.loadGrid();
+    $scope.loadCustomerTypeDataCombo();
+    // $scope.loadGrid();
 
     $scope.bindModel = function (model) {
         $scope.formModel = model || {};
@@ -44,6 +68,17 @@ catSenseApp.controller('activityDataController', function ($scope, $http, $q) {
     $scope.new = function () {
         $scope.formModel = {};
     };
+
+    $scope.saveCustomer = function (model) {
+      $http.post(customerUrl, JSON.stringify(model))
+          .then(function (success) {
+              console.log(success);
+              $scope.createdCustomer = success.data;
+              // $scope.loadGrid();
+          }, function (error) {
+              console.error(error.data);
+          });
+  };
 
     $scope.save = function (model) {
         $http.post(url, JSON.stringify(model))
@@ -99,104 +134,7 @@ catSenseApp.controller('activityDataController', function ($scope, $http, $q) {
         $scope.loadGrid();
     };
 
-    /*
-    let gridDataSource = new DevExpress.data.CustomStore({
-      load: function (loadOptions) {
-          var parameters = {};           
-          if (loadOptions.sort) {
-              parameters.orderby = loadOptions.sort[0].selector;
-              if (loadOptions.sort[0].desc)
-                parameters.orderby += '~desc';
-          }
-  
-          if (loadOptions.filter){
-            // parameters.filter = encodeURI(loadOptions.filter);
-            parameters.filter = loadOptions.filter[0] + '~' + loadOptions.filter[1] + '~' + loadOptions.filter[2];
-          }
-          
-          parameters.skip = loadOptions.skip;
-          parameters.take = loadOptions.take;
-          
-          let config = {
-              params: parameters
-          };
-          
-          return $http.get(url, (config))
-          .then(function (response) {
-              return { data: response.data.rows, totalCount: response.data.count };
-          }, function (error) {
-            console.error(error);
-              return $q.reject("Data Loading Error");
-          });
-      },
-      insert: function(values){
-        return $http.post(url, JSON.stringify(values))
-        .then(function (response) {
-          console.log(response);
-          // $scope.reloadGrid();
-          return { data: response.data, totalCount: response.data.length };
-        }, function (error) {
-          console.error(error.data);
-          return $q.reject("Data Insert Error");
-        });
-      },
-      update: function(key, values){
-        return $http.put(url + '/' +  encodeURIComponent(key.countryId), JSON.stringify(values))
-        .then(function (response) {
-          console.log(response);
-          // $scope.reloadGrid();
-          return { data: response.data.rows, totalCount: response.data.count };
-        }, function (error) {
-          console.error(error);
-          return $q.reject("Data Update Error");
-        });
-      },
-      remove: function(key){
-        return $http.delete(url + '/' + encodeURIComponent(key.countryId))
-        .then(function (response) {
-          console.log(response);
-          return $q.defer().resolve(response);
-        }, function (error) {
-          console.error(error);
-          return $q.reject("Data Delete Error");
-        });
-      },
-  });
     
-    $scope.dataGridOptions = {
-      dataSource: gridDataSource,
-      columns: [ 
-        {caption: 'Country', dataField:'name'}, {caption: 'Description', dataField:'description'}
-      ],
-      showBorders:true,
-      showColumnHeaders:true,
-      showColumnLines:true,
-      showRowLines:true,
-      editing: {
-        allowAdding: true,
-        allowDeleting: true,
-        allowUpdating: true,
-        mode: 'row'
-      },
-      pager: {
-        allowedPageSizes: [5, 10, 15, 20],
-        infoText:"Page {0} of {1} ({2} items)",
-        showInfo:true,
-        showNavigationButtons: true,
-        showPageSizeSelector: true,
-        visible:true
-      },
-      paging: {
-        enabled:true,
-        // pageIndex:0,
-        pageSize:5
-      },
-      headerFilter: { visible: false },
-      filterRow: { visible: true },
-      twoWayBindingEnabled: true,
-      remoteOperations: { groupPaging: true }	
-    };
-    */
 });
 
 
